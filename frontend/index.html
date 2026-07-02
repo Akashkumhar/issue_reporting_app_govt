@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Road Infrastructure Monitoring System</title>
+  <!--
+    Dashboard UI
+    - Pure HTML + CSS
+    - Government-style theme (blue/white/gray)
+  -->
+  <link rel="stylesheet" href="/frontend/style.css?v=2" />
+</head>
+<body>
+  <!--
+    Mobile sidebar toggle (CSS-only)
+    NOTE: The label in the navbar toggles this checkbox.
+  -->
+  <input class="nav-toggle" type="checkbox" id="nav-toggle" />
+
+  <!-- Sticky Top Navbar -->
+  <header class="topbar" role="banner">
+    <div class="topbar__inner">
+      <div class="topbar__left">
+        <!-- Mobile menu button (no JS) -->
+        <label class="icon-btn topbar__menu" for="nav-toggle" aria-label="Toggle navigation">
+          <span class="sr-only">Toggle navigation</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </label>
+
+        <div class="brand">
+          <div class="brand__mark" aria-hidden="true">SR</div>
+          <div class="brand__text">
+            <div class="brand__title">Smart Road Infrastructure Monitoring System</div>
+            <div class="brand__subtitle">Unified Dashboard (Demo)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topbar__right">
+        <div class="pill">
+          <span class="pill__dot" aria-hidden="true"></span>
+          <span class="pill__text">Live Status</span>
+        </div>
+
+        <button class="btn btn--outline" type="button">Export</button>
+        <button class="btn btn--primary" type="button">Create Report</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" role="navigation" aria-label="Primary">
+      <div class="sidebar__section">
+        <div class="sidebar__label">Navigation</div>
+
+        <a class="nav-item is-active" href="#dashboard" aria-current="page">
+          <span class="nav-item__icon" aria-hidden="true">
+            <!-- Dashboard icon -->
+            <svg viewBox="0 0 24 24"><path d="M4 13h7V4H4v9Zm9 7h7V11h-7v9ZM4 20h7v-5H4v5Zm9-18v7h7V2h-7Z" fill="currentColor" /></svg>
+          </span>
+          <span class="nav-item__text">Dashboard</span>
+        </a>
+
+        <a class="nav-item" href="#cctv">
+          <span class="nav-item__icon" aria-hidden="true">
+            <!-- CCTV icon -->
+            <svg viewBox="0 0 24 24"><path d="M3 7.5 16 3l2 5-13 4.5-1-3Zm4.5 9.25 10-3.5.75 2.25-10 3.5-.75-2.25ZM19 10.5l2 6.5-2 1-2.25-6.75 2.25-.75ZM6 14l1 3-2 .75-1-3L6 14Zm2 6h6v2H8v-2Z" fill="currentColor"/></svg>
+          </span>
+          <span class="nav-item__text">CCTV Reports</span>
+        </a>
+
+        <a class="nav-item" href="#complaints">
+          <span class="nav-item__icon" aria-hidden="true">
+            <!-- Complaints icon -->
+            <svg viewBox="0 0 24 24"><path d="M7 2h10v2H7V2Zm-2 4h14v16H5V6Zm2 2v12h10V8H7Zm1 2h8v2H8v-2Zm0 4h8v2H8v-2Z" fill="currentColor"/></svg>
+          </span>
+          <span class="nav-item__text">User Complaints</span>
+        </a>
+
+        <a class="nav-item" href="#alerts">
+          <span class="nav-item__icon" aria-hidden="true">
+            <!-- Alerts icon -->
+            <svg viewBox="0 0 24 24"><path d="M12 22a2.2 2.2 0 0 0 2.2-2.2H9.8A2.2 2.2 0 0 0 12 22Zm7-6V11a7 7 0 0 0-5-6.7V3a2 2 0 0 0-4 0v1.3A7 7 0 0 0 5 11v5l-2 2v1h18v-1l-2-2Z" fill="currentColor"/></svg>
+          </span>
+          <span class="nav-item__text">Traffic Alerts</span>
+        </a>
+
+        <a class="nav-item" href="#sos">
+          <span class="nav-item__icon" aria-hidden="true">
+            <!-- SOS icon -->
+            <svg viewBox="0 0 24 24"><path d="M12 2a9 9 0 1 0 9 9 9 9 0 0 0-9-9Zm1 13h-2v-2h2v2Zm0-4h-2V7h2v4Z" fill="currentColor"/></svg>
+          </span>
+          <span class="nav-item__text">SOS</span>
+        </a>
+      </div>
+
+      <div class="sidebar__section">
+        <div class="sidebar__label">System</div>
+        <div class="mini-card">
+          <div class="mini-card__title">Control Room</div>
+          <div class="mini-card__meta">Zone: Jaipur • Shift: 06:00–14:00</div>
+          <div class="mini-card__actions">
+            <button class="btn btn--outline btn--sm" type="button">Settings</button>
+            <button class="btn btn--primary btn--sm" type="button">Audit Log</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Page Content -->
+    <main class="content" id="dashboard" role="main">
+      <!-- Page header -->
+      <section class="page-head">
+        <div>
+          <h1 class="page-title">Operations Overview</h1>
+          <p class="page-subtitle">Monitor CCTV feeds, incidents, complaints, and emergency escalations across road corridors.</p>
+        </div>
+
+        <div class="page-actions">
+          <button class="btn btn--outline" type="button">Refresh</button>
+          <button class="btn btn--primary" type="button">New Incident</button>
+        </div>
+      </section>
+
+      <!-- Statistic cards -->
+      <section class="grid stats" aria-label="Key statistics">
+        <article class="card stat-card">
+          <div class="stat-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4V5Zm2 2v10h12V7H6Zm3 12h6v2H9v-2Z" fill="currentColor"/></svg>
+          </div>
+          <div class="stat-card__meta">
+            <div class="stat-card__label">Total CCTV</div>
+            <div class="stat-card__value">128</div>
+            <div class="stat-card__hint">Online: 124 • Offline: 4</div>
+          </div>
+        </article>
+
+        <article class="card stat-card">
+          <div class="stat-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 2 1 21h22L12 2Zm1 15h-2v-2h2v2Zm0-4h-2V9h2v4Z" fill="currentColor"/></svg>
+          </div>
+          <div class="stat-card__meta">
+            <div class="stat-card__label">Active Alerts</div>
+            <div class="stat-card__value">07</div>
+            <div class="stat-card__hint">High priority: 2</div>
+          </div>
+        </article>
+
+        <article class="card stat-card">
+          <div class="stat-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M6 19h12v2H6v-2Zm0-3h12v2H6v-2Zm0-3h12v2H6v-2ZM4 3h16v9H4V3Zm2 2v5h12V5H6Z" fill="currentColor"/></svg>
+          </div>
+          <div class="stat-card__meta">
+            <div class="stat-card__label">Accidents Today</div>
+            <div class="stat-card__value">03</div>
+            <div class="stat-card__hint">Resolved: 1 • Ongoing: 2</div>
+          </div>
+        </article>
+
+        <article class="card stat-card">
+          <div class="stat-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16v2H4V4Zm0 14h16v2H4v-2ZM6 8h12v8H6V8Zm2 2v4h8v-4H8Z" fill="currentColor"/></svg>
+          </div>
+          <div class="stat-card__meta">
+            <div class="stat-card__label">Reports (24h)</div>
+            <div class="stat-card__value">46</div>
+            <div class="stat-card__hint">CCTV: 21 • Citizens: 25</div>
+          </div>
+        </article>
+      </section>
+
+      <!-- Status summary + Quick actions -->
+      <section class="grid two-col" aria-label="Status and quick actions">
+        <article class="card">
+          <div class="card__head">
+            <h2 class="card__title">System Status</h2>
+            <span class="badge badge--normal">Normal</span>
+          </div>
+
+          <div class="status-list">
+            <div class="status-item">
+              <div class="status-item__left">
+                <div class="status-item__name">CCTV Network</div>
+                <div class="status-item__meta">124/128 cameras online</div>
+              </div>
+              <span class="badge badge--normal">Normal</span>
+            </div>
+
+            <div class="status-item">
+              <div class="status-item__left">
+                <div class="status-item__name">Incident Queue</div>
+                <div class="status-item__meta">12 pending reviews</div>
+              </div>
+              <span class="badge badge--warning">Warning</span>
+            </div>
+
+            <div class="status-item">
+              <div class="status-item__left">
+                <div class="status-item__name">Emergency Hotline</div>
+                <div class="status-item__meta">2 escalations in last 2 hours</div>
+              </div>
+              <span class="badge badge--critical">Critical</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card__head">
+            <h2 class="card__title">Quick Actions</h2>
+            <span class="chip">Operations</span>
+          </div>
+
+          <div class="action-grid">
+            <button class="action-tile" type="button">
+              <span class="action-tile__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 2a9 9 0 1 0 9 9 9 9 0 0 0-9-9Zm1 13h-2v-2h2v2Zm0-4h-2V7h2v4Z" fill="currentColor"/></svg>
+              </span>
+              <span class="action-tile__text">Dispatch SOS</span>
+            </button>
+
+            <button class="action-tile" type="button">
+              <span class="action-tile__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 4 3 9v11h18V9l-9-5Zm0 2.3L19 10v8H5v-8l7-3.7Zm-5 5.7h10v2H7v-2Z" fill="currentColor"/></svg>
+              </span>
+              <span class="action-tile__text">Broadcast Alert</span>
+            </button>
+
+            <button class="action-tile" type="button">
+              <span class="action-tile__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M4 6h16v12H4V6Zm2 2v8h12V8H6Zm1 10h10v2H7v-2Z" fill="currentColor"/></svg>
+              </span>
+              <span class="action-tile__text">Open CCTV Wall</span>
+            </button>
+
+            <button class="action-tile" type="button">
+              <span class="action-tile__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M7 2h10v2H7V2Zm-2 4h14v16H5V6Zm2 2v12h10V8H7Z" fill="currentColor"/></svg>
+              </span>
+              <span class="action-tile__text">Review Complaints</span>
+            </button>
+          </div>
+
+          <div class="note">
+            <div class="note__title">Tip</div>
+            <div class="note__body">Use quick actions for rapid response during peak traffic hours.</div>
+          </div>
+        </article>
+      </section>
+
+      <!-- Road incident reports table -->
+      <section class="card" aria-label="Road incident reports">
+        <div class="card__head card__head--spaced">
+          <div>
+            <h2 class="card__title">Road Incident Reports</h2>
+            <p class="card__subtitle">Sample data for layout preview. Integrate with live APIs later.</p>
+          </div>
+          <div class="table-actions">
+            <button class="btn btn--outline" type="button">Filter</button>
+            <button class="btn btn--primary" type="button">Download CSV</button>
+          </div>
+        </div>
+
+        <div class="table-wrap" role="region" aria-label="Road incident reports table" tabindex="0">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Report ID</th>
+                <th>Location</th>
+                <th>Type</th>
+                <th>Severity</th>
+                <th>Status</th>
+                <th>Reported</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="mono">INC-1042</span></td>
+                <td>NH-48, Km 221 (Sanganer)</td>
+                <td>Pothole Cluster</td>
+                <td><span class="badge badge--warning">Warning</span></td>
+                <td><span class="badge badge--normal">Open</span></td>
+                <td>Today, 07:10</td>
+                <td>
+                  <div class="btn-group">
+                    <button class="btn btn--outline btn--sm" type="button">View</button>
+                    <button class="btn btn--primary btn--sm" type="button">Assign</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><span class="mono">INC-1043</span></td>
+                <td>MI Road (Ajmeri Gate)</td>
+                <td>Accident</td>
+                <td><span class="badge badge--critical">Critical</span></td>
+                <td><span class="badge badge--warning">In Progress</span></td>
+                <td>Today, 06:42</td>
+                <td>
+                  <div class="btn-group">
+                    <button class="btn btn--outline btn--sm" type="button">View</button>
+                    <button class="btn btn--primary btn--sm" type="button">Escalate</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><span class="mono">INC-1044</span></td>
+                <td>Ring Road (Pratap Nagar)</td>
+                <td>Traffic Jam</td>
+                <td><span class="badge badge--normal">Normal</span></td>
+                <td><span class="badge badge--normal">Monitoring</span></td>
+                <td>Yesterday, 19:25</td>
+                <td>
+                  <div class="btn-group">
+                    <button class="btn btn--outline btn--sm" type="button">View</button>
+                    <button class="btn btn--primary btn--sm" type="button">Notify</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><span class="mono">INC-1045</span></td>
+                <td>Station Rd (Metro Exit)</td>
+                <td>CCTV Offline</td>
+                <td><span class="badge badge--warning">Warning</span></td>
+                <td><span class="badge badge--warning">Pending</span></td>
+                <td>Yesterday, 16:08</td>
+                <td>
+                  <div class="btn-group">
+                    <button class="btn btn--outline btn--sm" type="button">View</button>
+                    <button class="btn btn--primary btn--sm" type="button">Dispatch</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><span class="mono">INC-1046</span></td>
+                <td>JLN Marg (Gate No. 2)</td>
+                <td>SOS Call</td>
+                <td><span class="badge badge--critical">Critical</span></td>
+                <td><span class="badge badge--critical">Escalated</span></td>
+                <td>Yesterday, 10:51</td>
+                <td>
+                  <div class="btn-group">
+                    <button class="btn btn--outline btn--sm" type="button">View</button>
+                    <button class="btn btn--primary btn--sm" type="button">Respond</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <footer class="footer" role="contentinfo">
+        <div class="footer__inner">
+          <div>© 2025 Smart Road Infrastructure Monitoring System</div>
+          <div class="footer__meta">Demo UI • HTML + CSS only</div>
+        </div>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

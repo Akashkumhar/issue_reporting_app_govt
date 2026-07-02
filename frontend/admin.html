@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - RoadSense</title>
+    <link rel="stylesheet" href="/frontend/static/app.css?v=3" />
+</head>
+<body>
+    <header class="topbar">
+        <div class="topbar-inner">
+            <div class="brand">RoadSense</div>
+            <div class="nav-links">
+                <a href="/frontend/admin">Admin</a>
+                <a href="/frontend/logout">Logout</a>
+            </div>
+            <div class="nav-right">
+                <span class="muted" style="color: rgba(255,255,255,0.9)">Logged in as: <span id="me"></span></span>
+            </div>
+        </div>
+    </header>
+
+    <main class="page">
+        <div class="card">
+            <h2>All Issues</h2>
+            <p class="muted">Assign workers and track progress.</p>
+
+            <div class="table-wrap">
+                <table class="table" id="issues-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>User</th>
+                            <th>Status</th>
+                            <th>Progress</th>
+                            <th>Assigned Worker</th>
+                            <th>Assign</th>
+                            <th>Progress Photos</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 1rem;">
+            <h2>User Management</h2>
+            <p class="muted">Ban/unban or delete user and worker accounts.</p>
+
+            <div class="table-wrap">
+                <table class="table" id="users-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Role</th>
+                            <th>Banned</th>
+                            <th>Wallet</th>
+                            <th>Reputation</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script src="/frontend/static/app.js?v=3"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            window.FrontendApp.initAdminPage();
+        });
+    </script>
+</body>
+</html>

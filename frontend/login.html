@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RoadSense - Login</title>
+    <link rel="stylesheet" href="/frontend/static/app.css?v=5" />
+</head>
+<body>
+    <main class="auth-page">
+        <div id="container" class="auth-container">
+            <div class="form-container sign-up-container">
+                <form id="register-form" class="auth-form">
+                    <div class="auth-app" aria-label="Application name">
+                        <span class="auth-app__mark" aria-hidden="true">RS</span>
+                        <span class="auth-app__name">RoadSense</span>
+                    </div>
+                    <h1>Create Account</h1>
+
+                    <div class="social-container">
+                        <span class="social">f</span>
+                        <span class="social">G+</span>
+                        <span class="social">in</span>
+                    </div>
+
+                    <span class="muted">or use your email for registration</span>
+
+                    <input id="reg-username" name="username" type="text" placeholder="Username" required />
+                    <input id="reg-password" name="password" type="password" placeholder="Password" required />
+
+                    <select id="reg-role" name="role" required>
+                        <option value="user">User</option>
+                        <option value="worker">Worker</option>
+                        <option value="admin">Admin</option>
+                    </select>
+
+                    <button type="submit">SIGN UP</button>
+                </form>
+            </div>
+
+            <div class="form-container sign-in-container">
+                <form id="login-form" class="auth-form">
+                    <div class="auth-app" aria-label="Application name">
+                        <span class="auth-app__mark" aria-hidden="true">RS</span>
+                        <span class="auth-app__name">RoadSense</span>
+                    </div>
+                    <h1>Sign in</h1>
+
+                    <div class="social-container">
+                        <span class="social">f</span>
+                        <span class="social">G+</span>
+                        <span class="social">in</span>
+                    </div>
+
+                    <span class="muted">or use your account</span>
+
+                    <input id="username" name="username" type="text" placeholder="Username" required />
+                    <input id="password" name="password" type="password" placeholder="Password" required />
+
+                    <a class="muted" href="#" onclick="return false;">Forgot your password?</a>
+
+                    <div id="alert" class="alert" style="display:none"></div>
+
+                    <button type="submit">SIGN IN</button>
+                </form>
+            </div>
+
+            <div class="overlay-container">
+                <div class="overlay">
+                    <div class="overlay-panel overlay-left">
+                        <h1>Welcome Back!</h1>
+                        <p>To keep connected with us please login with your personal info</p>
+                        <button class="ghost" id="signIn">SIGN IN</button>
+                    </div>
+                    <div class="overlay-panel overlay-right">
+                        <h1>Hello, Friend!</h1>
+                        <p>Enter your personal details and start your journey with us</p>
+                        <button class="ghost" id="signUp">SIGN UP</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/frontend/static/app.js?v=5"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            window.FrontendApp.initLoginPage();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}User Dashboard{% endblock %}
+
+{% block content %}
+<h2>User Dashboard</h2>
+<p>Welcome, {{ current_user.username }}!</p>
+<a href="{{ url_for('issues.report_issue') }}">Report an Issue</a>
+
+<h3>My Issues</h3>
+<div class="table-wrap">
+    <table class="table" id="my-issues-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Status</th>
+                <th>Progress</th>
+                <th>Description</th>
+                <th>Message</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<script>
+    function renderProgress(progress) {
+        const safe = Math.max(0, Math.min(100, parseInt(progress || 0)));
+        return `
+            <div class="progress">
+                <div class="progress-bar" style="width: ${safe}%"></div>
+            </div>
+            <div class="muted">${safe}%</div>
+        `;
+    }
+
+    fetch('/issues/mine')
+    .then(response => response.json())
+    .then(data => {
+        const tbody = document.querySelector('#my-issues-table tbody');
+        tbody.innerHTML = '';
+        if (!data.length) {
+            tbody.innerHTML = '<tr><td colspan="5">No issues reported yet.</td></tr>';
+            return;
+        }
+        data.forEach(issue => {
+            const tr = document.createElement('tr');
+            const completed = parseInt(issue.progress || 0) >= 100;
+            tr.innerHTML = `
+                <td>${issue.id}</td>
+                <td>${issue.status}</td>
+                <td>${renderProgress(issue.progress)}</td>
+                <td>${issue.description}</td>
+                <td>${completed ? '<span class="badge success">Complaint is completed.</span>' : '<span class="badge">In progress</span>'}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+    })
+    .catch(() => {
+        const tbody = document.querySelector('#my-issues-table tbody');
+        tbody.innerHTML = '<tr><td colspan="5">Failed to load issues.</td></tr>';
+    });
+</script>
+{% endblock %}

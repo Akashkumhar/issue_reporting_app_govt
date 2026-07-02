@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Report Issue - RoadSense</title>
+    <link rel="stylesheet" href="/frontend/static/app.css?v=3" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+</head>
+<body>
+    <header class="topbar">
+        <div class="topbar-inner">
+            <div class="brand">RoadSense</div>
+            <div class="nav-links">
+                <a href="/frontend/user">My Issues</a>
+                <a href="/frontend/report">Report Issue</a>
+                <a href="/frontend/logout">Logout</a>
+            </div>
+            <div class="nav-right">
+                <span class="muted" style="color: rgba(255,255,255,0.9)">Logged in as: <span id="me"></span></span>
+            </div>
+        </div>
+    </header>
+
+    <main class="page">
+        <div class="card">
+            <h2>Report an Issue</h2>
+            <div id="alert" class="alert" style="display:none"></div>
+
+            <div id="map" style="height: 400px; margin-top: 1rem;"></div>
+
+            <form id="report-form" method="POST" enctype="multipart/form-data" style="margin-top: 1rem;">
+                <div class="row">
+                    <div>
+                        <label for="lat">Latitude</label><br />
+                        <input type="text" id="lat" name="lat" readonly required />
+                    </div>
+                    <div>
+                        <label for="lng">Longitude</label><br />
+                        <input type="text" id="lng" name="lng" readonly required />
+                    </div>
+                </div>
+
+                <div style="margin-top: 1rem;">
+                    <label for="description">Description</label><br />
+                    <textarea id="description" name="description" rows="4" style="width: 100%;" required></textarea>
+                </div>
+
+                <div style="margin-top: 1rem;">
+                    <label for="image">Image (optional)</label><br />
+                    <input type="file" id="image" name="image" />
+                </div>
+
+                <div style="margin-top: 1rem;">
+                    <button type="submit">Submit Issue</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script src="/frontend/static/app.js?v=3"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            window.FrontendApp.initReportPage();
+        });
+    </script>
+</body>
+</html>

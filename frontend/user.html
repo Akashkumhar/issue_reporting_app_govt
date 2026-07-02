@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User - RoadSense</title>
+    <link rel="stylesheet" href="/frontend/static/app.css?v=3" />
+</head>
+<body>
+    <header class="topbar">
+        <div class="topbar-inner">
+            <div class="brand">RoadSense</div>
+            <div class="nav-links">
+                <a href="/frontend/user">My Issues</a>
+                <a href="/frontend/report">Report Issue</a>
+                <a href="/frontend/logout">Logout</a>
+            </div>
+            <div class="nav-right">
+                <span class="muted" style="color: rgba(255,255,255,0.9)">Logged in as: <span id="me"></span></span>
+            </div>
+        </div>
+    </header>
+
+    <main class="page">
+        <div class="card" style="margin-bottom: 1rem;">
+            <h2>Wallet & Rewards</h2>
+            <p class="muted">Earn coins for verified unique reports. Redeem coins to recharge FASTag.</p>
+
+            <div class="row" style="margin-top: 0.75rem;">
+                <div>
+                    <div class="muted">Coin Balance</div>
+                    <div style="font-size: 22px; font-weight: 800;" id="wallet-balance">0</div>
+                </div>
+                <div>
+                    <div class="muted">Reputation</div>
+                    <div style="font-size: 22px; font-weight: 800;" id="reputation-score">0</div>
+                </div>
+            </div>
+
+            <div id="redeem-alert" class="alert" style="display:none"></div>
+
+            <h3 style="margin-top: 1rem;">FASTag Redemption</h3>
+            <p class="muted">Rate: 10 coins = ₹1. Minimum: 5000 coins.</p>
+
+            <form id="fastag-redeem-form" style="margin-top: 0.5rem;">
+                <div class="row">
+                    <div>
+                        <label for="vehicle-number">Vehicle Number</label><br />
+                        <input type="text" id="vehicle-number" placeholder="RJ14AB1234" required />
+                    </div>
+                    <div>
+                        <label for="coins">Coins</label><br />
+                        <input type="number" id="coins" min="5000" step="10" value="5000" required />
+                    </div>
+                    <div style="align-self: end;">
+                        <button type="submit">Request Recharge</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+ 
+        <div class="card">
+            <h2>My Issues</h2>
+            <div class="table-wrap">
+                <table class="table" id="my-issues-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Status</th>
+                            <th>Progress</th>
+                            <th>Description</th>
+                            <th>Message</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script src="/frontend/static/app.js?v=3"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            window.FrontendApp.initUserPage();
+        });
+    </script>
+</body>
+</html>

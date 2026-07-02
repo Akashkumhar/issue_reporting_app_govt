@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Worker - RoadSense</title>
+    <link rel="stylesheet" href="/frontend/static/app.css?v=3" />
+</head>
+<body>
+    <header class="topbar">
+        <div class="topbar-inner">
+            <div class="brand">RoadSense</div>
+            <div class="nav-links">
+                <a href="/frontend/worker">Assigned Issues</a>
+                <a href="/frontend/logout">Logout</a>
+            </div>
+            <div class="nav-right">
+                <span class="muted" style="color: rgba(255,255,255,0.9)">Logged in as: <span id="me"></span></span>
+            </div>
+        </div>
+    </header>
+
+    <main class="page">
+        <div class="card">
+            <h2>Assigned Issues</h2>
+            <p class="muted">Update progress in 10% steps. At 100% it is marked resolved.</p>
+
+            <div class="table-wrap">
+                <table class="table" id="assigned-issues-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Status</th>
+                            <th>Progress</th>
+                            <th>Update Progress</th>
+                            <th>Progress Photos</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script src="/frontend/static/app.js?v=3"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            window.FrontendApp.initWorkerPage();
+        });
+    </script>
+</body>
+</html>

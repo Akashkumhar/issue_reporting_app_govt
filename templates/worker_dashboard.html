@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Worker Dashboard{% endblock %}
+
+{% block content %}
+<h2>Worker Dashboard</h2>
+<p>Welcome, {{ current_user.username }}!</p>
+<h3>Assigned Issues</h3>
+<div class="table-wrap">
+    <table class="table" id="assigned-issues-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Status</th>
+                <th>Progress</th>
+                <th>Update Progress</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+<script>
+    function renderProgress(progress) {
+        const safe = Math.max(0, Math.min(100, parseInt(progress || 0)));
+        return `
+            <div class="progress">
+                <div class="progress-bar" style="width: ${safe}%"></div>
+            </div>
+            <div class="muted" id="progress-text-${safe}">${safe}%</div>
+        `;
+    }
+
+    function loadAssignedIssues() {
+        fetch('/issues/assigned')
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.querySelector('#assigned-issues-table tbody');
+            tbody.innerHTML = '';
+            if (!data.length) {
+                tbody.innerHTML = '<tr><td colspan="5">No issues assigned yet.</td></tr>';
+                return;
+            }
+            data.forEach(issue => {
+                const tr = document.createElement('tr');
+                const selectId = `progress-input-${issue.id}`;
+                tr.innerHTML = `
+                    <td>${issue.id}</td>
+                    <td id="status-${issue.id}">${issue.status}</td>
+                    <td>
+                        <div class="progress">
+                            <div class="progress-bar" id="progress-bar-${issue.id}" style="width: ${issue.progress}%"></div>
+                        </div>
+                        <div class="muted" id="progress-${issue.id}">${issue.progress}%</div>
+                    </td>
+                    <td>
+                        <select id="${selectId}">
+                            ${[0,10,20,30,40,50,60,70,80,90,100].map(p => '<option value="' + p + '" ' + (p === issue.progress ? 'selected' : '') + '>' + p + '%</option>').join('')}
+                        </select>
+                        <button type="button" onclick="updateProgress(${issue.id}, '${selectId}')">Update</button>
+                    </td>
+                    <td>${issue.description}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        })
+        .catch(() => {
+            const tbody = document.querySelector('#assigned-issues-table tbody');
+            tbody.innerHTML = '<tr><td colspan="5">Failed to load assigned issues.</td></tr>';
+        });
+    }
+
+    function updateProgress(issueId, selectId) {
+        const select = document.getElementById(selectId);
+        const progress = parseInt(select.value);
+        fetch(`/issues/${issueId}/progress`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ progress })
+        })
+        .then(response => response.json().then(data => ({ ok: response.ok, data })))
+        .then(({ ok, data }) => {
+            if (!ok) {
+                alert(data.error || 'Failed to update progress');
+                return;
+            }
+            document.getElementById(`progress-${issueId}`).textContent = `${data.progress}%`;
+            document.getElementById(`status-${issueId}`).textContent = data.status;
+            const bar = document.getElementById(`progress-bar-${issueId}`);
+            if (bar) bar.style.width = `${data.progress}%`;
+            if (data.completed) {
+                alert('Progress is 100%. Complaint marked as completed.');
+            }
+        })
+        .catch(() => alert('Failed to update progress'));
+    }
+
+    loadAssignedIssues();
+</script>
+{% endblock %}

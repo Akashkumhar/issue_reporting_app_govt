@@ -1,0 +1,9 @@
+Flask
+Flask-SQLAlchemy
+Flask-Bcrypt
+Flask-Login
+requests
+google-generativeai
+python-dotenv
+ultralytics
+opencv-python

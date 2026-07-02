@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<h2>Admin Dashboard</h2>
+<p>Welcome, {{ current_user.username }}!</p>
+<h3>All Issues</h3>
+<div class="table-wrap">
+    <table class="table" id="issues-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>User</th>
+                <th>Status</th>
+                <th>Progress</th>
+                <th>Assigned Worker</th>
+                <th>Assign</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+<script>
+    let workersById = {};
+
+    function renderProgress(progress) {
+        const safe = Math.max(0, Math.min(100, parseInt(progress || 0)));
+        return `
+            <div class="progress">
+                <div class="progress-bar" style="width: ${safe}%"></div>
+            </div>
+            <div class="muted">${safe}%</div>
+        `;
+    }
+
+    function loadAdminData() {
+        Promise.all([
+            fetch('/workers').then(r => r.json()),
+            fetch('/issues').then(r => r.json())
+        ]).then(([workers, issues]) => {
+            workersById = {};
+            (workers || []).forEach(w => { workersById[w.id] = w.username; });
+
+            const tbody = document.querySelector('#issues-table tbody');
+            tbody.innerHTML = '';
+
+            (issues || []).forEach(issue => {
+                const tr = document.createElement('tr');
+
+                const assignedName = issue.assigned_worker_id ? (workersById[issue.assigned_worker_id] || `Worker #${issue.assigned_worker_id}`) : 'Unassigned';
+                const assignSelectId = `assign-worker-${issue.id}`;
+
+                tr.innerHTML = `
+                    <td>${issue.id}</td>
+                    <td>${issue.user_id}</td>
+                    <td>${issue.status}</td>
+                    <td>${renderProgress(issue.progress)}</td>
+                    <td id="assigned-name-${issue.id}">${assignedName}</td>
+                    <td>
+                        <select id="${assignSelectId}">
+                            <option value="">Select worker</option>
+                            ${(workers || []).map(w => '<option value="' + w.id + '" ' + (w.id === issue.assigned_worker_id ? 'selected' : '') + '>' + w.username + '</option>').join('')}
+                        </select>
+                        <button type="button" onclick="assignWorker(${issue.id}, '${assignSelectId}')">Assign</button>
+                    </td>
+                    <td>${issue.description}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }).catch(() => {
+            const tbody = document.querySelector('#issues-table tbody');
+            tbody.innerHTML = '<tr><td colspan="7">Failed to load issues.</td></tr>';
+        });
+    }
+
+    function assignWorker(issueId, selectId) {
+        const select = document.getElementById(selectId);
+        const workerId = select.value;
+        if (!workerId) {
+            alert('Please select a worker');
+            return;
+        }
+        fetch('/assign', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ issue_id: issueId, worker_id: parseInt(workerId) })
+        })
+        .then(response => response.json().then(data => ({ ok: response.ok, data })))
+        .then(({ ok, data }) => {
+            if (!ok) {
+                alert(data.error || 'Failed to assign worker');
+                return;
+            }
+            loadAdminData();
+        })
+        .catch(() => alert('Failed to assign worker'));
+    }
+
+    loadAdminData();
+</script>
+{% endblock %}
